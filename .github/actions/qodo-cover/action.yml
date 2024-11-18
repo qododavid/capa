@@ -1,6 +1,7 @@
 name: Qodo Cover
 description: "Gets the diff of a PR, posts it as a comment, checks out the PR branch, and counts lines of code."
 author: QodoAI
+
 inputs:
   greeting:
     description: "Custom greeting message for the PR comment"
@@ -9,9 +10,7 @@ inputs:
   github_token:
     description: "GitHub token for authentication"
     required: true
-outputs:
-  line_count:
-    description: "Total number of lines counted"
+
 runs:
   using: "composite"
   steps:
@@ -21,27 +20,28 @@ runs:
         fetch-depth: 0
 
     - name: Get PR Diff
-      id: get_diff
       run: |
-        DIFF=$(gh pr diff ${{ github.event.pull_request.number }})
-        echo "$DIFF" > /tmp/pr_diff.txt
-        echo "::set-output name=diff::$DIFF"
+        gh pr diff ${{ github.event.pull_request.number }} > /tmp/pr_diff.txt
       env:
         GITHUB_TOKEN: ${{ inputs.github_token }}
       shell: bash
 
-    - name: Post PR Diff Comment
-      if: ${{ steps.get_diff.outputs.diff }}
+    - name: Install Jinja2 CLI
       run: |
-        gh pr comment ${{ github.event.pull_request.number }} -b "${{ inputs.greeting }}! Here's the diff of the PR:\n\n\`\`\`diff\n$(cat /tmp/pr_diff.txt)\n\`\`\`"
+        pip install jinja2-cli
+
+    - name: Populate PR Comment with Jinja2
+      run: |
+        jinja2 comment_template.j2 -D greeting="${{ inputs.greeting }}" -D diff="$(cat /tmp/pr_diff.txt)" > /tmp/comment_body.txt
+
+    - name: Post PR Diff Comment
+      run: |
+        gh pr comment ${{ github.event.pull_request.number }} -F /tmp/comment_body.txt
       env:
         GITHUB_TOKEN: ${{ inputs.github_token }}
       shell: bash
 
     - name: Count Lines of Code
-      id: line_count
       run: |
-        LOC=$(find . -type f -name "*.py" -exec wc -l {} + | awk '{total += $1} END {print total}')
-        echo "::set-output name=line_count::$LOC"
-        echo "found $LOC lines of code"
+        find . -type f -name "*.py" -exec wc -l {} + | awk '{total += $1} END {print "Total lines of code:", total}'
       shell: bash
