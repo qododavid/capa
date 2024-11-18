@@ -33,7 +33,7 @@ runs:
 
     - name: Populate PR Comment with Jinja2
       run: |
-        jinja2 jinja2 ./.github/actions/qodo-cover/comment_template.j2 -D greeting="${{ inputs.greeting }}" -D diff="$(cat /tmp/pr_diff.txt)" > /tmp/comment_body.txt
+        jinja2 ./.github/actions/qodo-cover/comment_template.j2 -D greeting="${{ inputs.greeting }}" -D diff="$(cat /tmp/pr_diff.txt)" > /tmp/comment_body.txt
       shell: bash
 
     - name: Post PR Diff Comment
