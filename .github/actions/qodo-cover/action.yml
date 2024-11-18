@@ -31,6 +31,10 @@ runs:
       with:
         fetch-depth: 0
 
+    - name: List contents of capa directory
+      run: ls -la capa
+      shell: bash
+
     - name: Get PR Diff
       run: |
         gh pr diff ${{ github.event.pull_request.number }} > /tmp/pr_diff.txt
