@@ -97,7 +97,7 @@ runs:
         gh pr create --base ${{ github.event.pull_request.head.ref }} \
                      --head qodo-cover-${{ env.timestamp }} \
                      --title "Qodo Cover Update: ${{ env.timestamp }}" \
-                     --body "This PR updates now.txt with the current timestamp."
+                     --body "Patch on #${{ github.event.pull_request.number }}: this PR updates now.txt with the current timestamp."
       env:
         GITHUB_TOKEN: ${{ inputs.github_token }}
       shell: bash
