@@ -14,6 +14,10 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: List contents of capa directory
+      run: ls -la capa
+      shell: bash
+      
     - name: Get the action repo
       uses: actions/checkout@v3
       with:
