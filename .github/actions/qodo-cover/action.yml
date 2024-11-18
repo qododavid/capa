@@ -18,7 +18,7 @@ runs:
       uses: actions/checkout@v3
       with:
         repository: qododavid/capa
-        path: /tmp/capa
+        path: capa
         ref: v1
         fetch-depth: 0
 
@@ -41,7 +41,7 @@ runs:
 
     - name: Populate PR Comment with Jinja2
       run: |
-        jinja2 /tmp/capa/.github/actions/qodo-cover/comment_template.j2 -D greeting="${{ inputs.greeting }}" -D diff="$(cat /tmp/pr_diff.txt)" > /tmp/comment_body.txt
+        jinja2 capa/.github/actions/qodo-cover/comment_template.j2 -D greeting="${{ inputs.greeting }}" -D diff="$(cat /tmp/pr_diff.txt)" > /tmp/comment_body.txt
       shell: bash
 
     - name: Post PR Diff Comment
