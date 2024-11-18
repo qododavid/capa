@@ -14,15 +14,18 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Get included files
+      uses: actions/checkout@v3
+      with:
+        repository: qododavid/capa
+        path: /tmp/capa
+        ref: v1
+        fetch-depth: 0
+
     - name: Checkout code
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
-
-    - name: List files in action directory
-      run: |
-        ls -R .github/actions/qodo-cover
-      shell: bash
 
     - name: Get PR Diff
       run: |
@@ -38,7 +41,7 @@ runs:
 
     - name: Populate PR Comment with Jinja2
       run: |
-        jinja2 .github/actions/qodo-cover/comment_template.j2 -D greeting="${{ inputs.greeting }}" -D diff="$(cat /tmp/pr_diff.txt)" > /tmp/comment_body.txt
+        jinja2 /tmp/capa/.github/actions/qodo-cover/comment_template.j2 -D greeting="${{ inputs.greeting }}" -D diff="$(cat /tmp/pr_diff.txt)" > /tmp/comment_body.txt
       shell: bash
 
     - name: Post PR Diff Comment
