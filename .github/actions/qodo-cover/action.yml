@@ -14,9 +14,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: List contents of capa directory
-      run: ls -la
-      shell: bash
 
     - name: Get the action repo
       uses: actions/checkout@v3
@@ -63,6 +60,12 @@ runs:
       run: |
         total=$(find . -type f -name "*.py" -exec wc -l {} + | awk '{total += $1} END {print total}')
         echo "Total lines of code: $total"
+      shell: bash
+
+    - name: Configure Git Identity
+      run: |
+        git config --global user.email "cover-bot@qodo.ai"
+        git config --global user.name "Qodo Cover"
       shell: bash
 
     - name: Compute current timestamp
