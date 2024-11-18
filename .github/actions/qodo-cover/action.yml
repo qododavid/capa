@@ -1,0 +1,42 @@
+name: Qodo Cover
+description: "Gets the diff of a PR, posts it as a comment, checks out the PR branch, and counts lines of code."
+author: QodoAI
+inputs:
+  greeting:
+    description: "Custom greeting message for the PR comment"
+    required: false
+    default: "Hello"
+outputs:
+  line_count:
+    description: "Total number of lines counted"
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Get PR Diff
+      id: get_diff
+      run: |
+        DIFF=$(gh pr diff ${{ github.event.pull_request.number }})
+        echo "$DIFF" > /tmp/pr_diff.txt
+        echo "::set-output name=diff::$DIFF"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Post PR Diff Comment
+      if: ${{ steps.get_diff.outputs.diff }}
+      run: |
+        gh pr comment ${{ github.event.pull_request.number }} -b "${{ inputs.greeting }}! Here's the diff of the PR:\n\n\`\`\`diff\n$(cat /tmp/pr_diff.txt)\n\`\`\`"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Count Lines of Code
+      id: line_count
+      run: |
+        LOC=$(find . -type f -name "*.py" -exec wc -l {} + | awk '{total += $1} END {print total}')
+        echo "::set-output name=line_count::$LOC"
+        echo "found $LOC lines of code"
+      shell: bash
