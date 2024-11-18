@@ -6,6 +6,9 @@ inputs:
     description: "Custom greeting message for the PR comment"
     required: false
     default: "Hello"
+  github_token:
+    description: "GitHub token for authentication"
+    required: true
 outputs:
   line_count:
     description: "Total number of lines counted"
@@ -24,14 +27,16 @@ runs:
         echo "$DIFF" > /tmp/pr_diff.txt
         echo "::set-output name=diff::$DIFF"
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ inputs.github_token }}
+      shell: bash
 
     - name: Post PR Diff Comment
       if: ${{ steps.get_diff.outputs.diff }}
       run: |
         gh pr comment ${{ github.event.pull_request.number }} -b "${{ inputs.greeting }}! Here's the diff of the PR:\n\n\`\`\`diff\n$(cat /tmp/pr_diff.txt)\n\`\`\`"
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ inputs.github_token }}
+      shell: bash
 
     - name: Count Lines of Code
       id: line_count
