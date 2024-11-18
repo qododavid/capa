@@ -60,3 +60,37 @@ runs:
         total=$(find . -type f -name "*.py" -exec wc -l {} + | awk '{total += $1} END {print total}')
         echo "Total lines of code: $total"
       shell: bash
+
+    - name: Compute current timestamp
+      id: timestamp
+      run: echo "timestamp=$(date +%s)" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Create a new branch
+      run: |
+        git checkout -b qodo-cover-${{ env.timestamp }}
+      shell: bash
+
+    - name: Create now.txt and add timestamp
+      run: |
+        echo "${{ env.timestamp }}" > now.txt
+        git add now.txt
+        git commit -m "update now.txt"
+      shell: bash
+
+    - name: Push the branch
+      run: |
+        git push origin qodo-cover-${{ env.timestamp }}
+      env:
+        GITHUB_TOKEN: ${{ inputs.github_token }}
+      shell: bash
+
+    - name: Create a PR from the new branch
+      run: |
+        gh pr create --base ${{ github.event.pull_request.head.ref }} \
+                     --head qodo-cover-${{ env.timestamp }} \
+                     --title "Qodo Cover Update: ${{ env.timestamp }}" \
+                     --body "This PR updates now.txt with the current timestamp."
+      env:
+        GITHUB_TOKEN: ${{ inputs.github_token }}
+      shell: bash
