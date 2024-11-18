@@ -57,5 +57,6 @@ runs:
 
     - name: Count Lines of Code
       run: |
-        find . -type f -name "*.py" -exec wc -l {} + | awk '{total += $1} END {print "Total lines of code:", total}'
+        total=$(find . -type f -name "*.py" -exec wc -l {} + | awk '{total += $1} END {print total}')
+        echo "Total lines of code: $total"
       shell: bash
