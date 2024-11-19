@@ -18,7 +18,8 @@ inputs:
     description: "Root directory of the project"
     required: false
     default: "."
-  code_coverage_report_path: "Path to the coverage.xml"
+  code_coverage_report_path:
+    description: "Path to the coverage.xml"
     required: false
     default: "."
   test_command: "Command to run tests, e.g. 'pytest --cov=. --cov-report=xml --cov-report=term'"
