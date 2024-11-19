@@ -88,9 +88,7 @@ runs:
           --test-command ${{ inputs.test_command }} \
           --model ${{ inputs.model }}
       env:
-        <<: ${{ toJSON(env) }} # Forward GitHub environment variables
-        <<: ${{ toJSON(secrets) }} # Forward secrets
-        <<: ${{ toJSON(vars) }} # Forward repository variables
+        <<: ${{ toJSON(env) }}
       shell: bash
 
     - name: Push the branch
