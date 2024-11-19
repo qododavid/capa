@@ -22,9 +22,11 @@ inputs:
     description: "Path to the coverage.xml"
     required: false
     default: "."
-  test_command: "Command to run tests, e.g. 'pytest --cov=. --cov-report=xml --cov-report=term'"
+  test_command:
+    description: "Command to run tests, e.g. 'pytest --cov=. --cov-report=xml --cov-report=term'"
     required: true
-  model: "LLM model name, e.g. 'gpt-4o'"
+  model:
+    description: "LLM model name, e.g. 'gpt-4o'"
     required: false
     default: "gpt-4o"
 
