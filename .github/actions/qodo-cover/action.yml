@@ -10,6 +10,22 @@ inputs:
   github_token:
     description: "GitHub token for authentication"
     required: true
+  project_language:
+    description: "Language of the project"
+    required: false
+    default: "python"
+  project_root:
+    description: "Root directory of the project"
+    required: false
+    default: "."
+  code_coverage_report_path: "Path to the coverage.xml"
+    required: false
+    default: "."
+  test_command: "Command to run tests, e.g. 'pytest --cov=. --cov-report=xml --cov-report=term'"
+    required: true
+  model: "LLM model name, e.g. 'gpt-4o'"
+    required: false
+    default: "gpt-4o"
 
 runs:
   using: "composite"
@@ -44,21 +60,10 @@ runs:
         GITHUB_TOKEN: ${{ inputs.github_token }}
       shell: bash
 
-    - name: Count Lines of Code
-      run: |
-        total=$(find . -type f -name "*.py" -exec wc -l {} + | awk '{total += $1} END {print total}')
-        echo "Total lines of code: $total"
-      shell: bash
-
     - name: Configure Git Identity
       run: |
         git config --global user.email "cover-bot@qodo.ai"
         git config --global user.name "Qodo Cover"
-      shell: bash
-
-    - name: Compute current timestamp
-      id: timestamp
-      run: echo "timestamp=$(date +%s)" >> $GITHUB_ENV
       shell: bash
 
     - name: Create a new branch
@@ -66,11 +71,23 @@ runs:
         git checkout -b qodo-cover-${{ env.timestamp }}
       shell: bash
 
-    - name: Create now.txt and add timestamp
+    - name: Compute current timestamp
+      id: timestamp
+      run: echo "timestamp=$(date +%s)" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Run cover-agent-pro
       run: |
-        echo "${{ env.timestamp }}" > now.txt
-        git add now.txt
-        git commit -m "update now.txt"
+        ${{ github.action_path }}/bin/cover-agent-pro \
+          --project-language ${{ inputs.project_language }} \
+          --project-root ${{ github.workspace }}/${{ inputs.project_root }} \
+          --code-coverage-report-path ${{ github.workspace }}${{ inputs.code_coverage_report_path }} \
+          --test-command ${{ inputs.test_command }} \
+          --model ${{ inputs.model }}
+      env:
+        <<: ${{ toJSON(env) }} # Forward GitHub environment variables
+        <<: ${{ toJSON(secrets) }} # Forward secrets
+        <<: ${{ toJSON(vars) }} # Forward repository variables
       shell: bash
 
     - name: Push the branch
