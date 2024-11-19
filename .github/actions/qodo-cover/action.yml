@@ -19,23 +19,6 @@ runs:
       run: ls -la ${{ github.action_path }}
       shell: bash
 
-    - name: Get the action repo
-      uses: actions/checkout@v3
-      with:
-        repository: qododavid/capa
-        path: capa
-        ref: v1
-        fetch-depth: 0
-
-    - name: Store the action repo in /tmp/
-      run: mv capa  /tmp/
-      shell: bash
-
-    - name: Checkout code
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-
     - name: Get PR Diff
       run: |
         gh pr diff ${{ github.event.pull_request.number }} > /tmp/pr_diff.txt
@@ -50,7 +33,7 @@ runs:
 
     - name: Populate PR Comment with Jinja2
       run: |
-        jinja2 /tmp/capa/.github/actions/qodo-cover/comment_template.j2 -D greeting="${{ inputs.greeting }}" -D diff="$(cat /tmp/pr_diff.txt)" > /tmp/comment_body.txt
+        jinja2 ${{ github.action_path }}/comment_template.j2 -D greeting="${{ inputs.greeting }}" -D diff="$(cat /tmp/pr_diff.txt)" > /tmp/comment_body.txt
       shell: bash
 
     - name: Post PR Diff Comment
