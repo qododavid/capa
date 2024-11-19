@@ -15,10 +15,6 @@ runs:
   using: "composite"
   steps:
 
-    - name: Check if local files are present
-      run: ls -la ${{ github.action_path }}
-      shell: bash
-
     - name: Get PR Diff
       run: |
         gh pr diff ${{ github.event.pull_request.number }} > /tmp/pr_diff.txt
