@@ -17,6 +17,7 @@ runs:
 
     - name: Check if local files are present
       run: ls -la ${{ github.action_path }}
+      shell: bash
 
     - name: Get the action repo
       uses: actions/checkout@v3
