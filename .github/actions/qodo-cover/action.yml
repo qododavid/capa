@@ -69,14 +69,14 @@ runs:
         git config --global user.name "Qodo Cover"
       shell: bash
 
-    - name: Create a new branch
-      run: |
-        git checkout -b qodo-cover-${{ env.timestamp }}
-      shell: bash
-
     - name: Compute current timestamp
       id: timestamp
       run: echo "timestamp=$(date +%s)" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Create a new branch
+      run: |
+        git checkout -b qodo-cover-${{ env.timestamp }}
       shell: bash
 
     - name: Run cover-agent-pro
