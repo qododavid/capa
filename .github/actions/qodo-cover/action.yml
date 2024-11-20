@@ -21,7 +21,7 @@ inputs:
   code_coverage_report_path:
     description: "Path to the coverage.xml"
     required: false
-    default: "."
+    default: "./coverage.xml"
   test_command:
     description: "Command to run tests, e.g. 'pytest --cov=. --cov-report=xml --cov-report=term'"
     required: true
@@ -84,7 +84,7 @@ runs:
         ${{ github.action_path }}/bin/cover-agent-pro \
           --project-language ${{ inputs.project_language }} \
           --project-root ${{ github.workspace }}/${{ inputs.project_root }} \
-          --code-coverage-report-path ${{ github.workspace }}${{ inputs.code_coverage_report_path }} \
+          --code-coverage-report-path ${{ github.workspace }}/${{ inputs.code_coverage_report_path }} \
           --test-command ${{ inputs.test_command }} \
           --model ${{ inputs.model }}
       env:
