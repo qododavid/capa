@@ -63,12 +63,6 @@ runs:
         pip install jedi-language-server
       shell: bash
 
-    - name: Install required libraries
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y sqlite3 libsqlite3-dev
-      shell: bash
-
     - name: Get PR Diff
       run: |
         gh pr diff ${{ github.event.pull_request.number }} > /tmp/pr_diff.txt
