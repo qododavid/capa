@@ -39,6 +39,11 @@ runs:
       with:
         fetch-depth: 0
 
+    - name: Install jedi-language-server
+      run: |
+        pip install jedi-language-server
+      shell: bash
+
     - name: Get PR Diff
       run: |
         gh pr diff ${{ github.event.pull_request.number }} > /tmp/pr_diff.txt
