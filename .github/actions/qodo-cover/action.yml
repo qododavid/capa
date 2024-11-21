@@ -109,7 +109,7 @@ runs:
           --project-language ${{ inputs.project_language }} \
           --project-root ${{ github.workspace }}/${{ inputs.project_root }} \
           --code-coverage-report-path ${{ github.workspace }}/${{ inputs.code_coverage_report_path }} \
-          --test-command ${{ inputs.test_command }} \
+          --test-command "${{ inputs.test_command }}" \
           --model ${{ inputs.model }}
       env:
         <<: ${{ toJSON(env) }}
