@@ -103,10 +103,6 @@ runs:
         git checkout -b qodo-cover-${{ env.timestamp }}
       shell: bash
 
-    - name: DEBUG - print contents
-      run: ls -l ${{ github.action_path }}/bin/
-      shell: bash
-
     - name: Run cover-agent-pro
       run: |
         /tmp/capa/.github/actions/qodo-cover/bin/cover-agent-pro \
