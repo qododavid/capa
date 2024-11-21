@@ -84,7 +84,7 @@ runs:
         git checkout -b qodo-cover-${{ env.timestamp }}
       shell: bash
 
-    - name: DEBUG: print contents
+    - name: DEBUG - print contents
       run: ls -l ${{ github.action_path }}/bin/
       shell: bash
 
