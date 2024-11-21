@@ -84,9 +84,13 @@ runs:
         git checkout -b qodo-cover-${{ env.timestamp }}
       shell: bash
 
+    - name: DEBUG: print contents
+      run: ls -l ${{ github.action_path }}/bin/
+      shell: bash
+
     - name: Run cover-agent-pro
       run: |
-        ${{ github.action_path }}/bin/cover-agent-pro \
+        bash -x ${{ github.action_path }}/bin/cover-agent-pro \
           --project-language ${{ inputs.project_language }} \
           --project-root ${{ github.workspace }}/${{ inputs.project_root }} \
           --code-coverage-report-path ${{ github.workspace }}/${{ inputs.code_coverage_report_path }} \
