@@ -39,6 +39,7 @@ runs:
         git lfs install
         cd ${{ github.action_path }}
         git lfs pull
+      shell: bash
 
     - name: Checkout code
       uses: actions/checkout@v3
