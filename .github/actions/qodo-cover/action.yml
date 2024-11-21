@@ -34,6 +34,12 @@ runs:
   using: "composite"
   steps:
 
+    - name: Install Git LFS and Pull Binary
+      run: |
+        git lfs install
+        cd ${{ github.action_path }}
+        git lfs pull
+
     - name: Checkout code
       uses: actions/checkout@v3
       with:
