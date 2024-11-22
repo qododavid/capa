@@ -48,7 +48,6 @@ fi
 git fetch origin
 git checkout "$PR_REF"
 gh pr diff "$PR_NUMBER" > /tmp/pr_diff.txt
-# jinja2 "$ACTION_PATH/templates/comment_template.j2" -D greeting="$GREETING" -D diff="$(cat /tmp/pr_diff.txt)" > /tmp/comment_body.txt
 
 # Run cover-agent
 "$BINARY_PATH" \
