@@ -40,7 +40,7 @@ git config --global user.name "Qodo Cover"
 if [ ! -f "$BINARY_PATH" ]; then
     echo "Downloading cover-agent..."
     mkdir -p /tmp/bin
-    wget -P /tmp/bin https://github.com/qododavid/capa/releases/download/v1/cover-agent-pro >/dev/null
+    wget -q -P /tmp/bin https://github.com/qododavid/capa/releases/download/v1/cover-agent-pro >/dev/null
     chmod +x "$BINARY_PATH"
 fi
 
