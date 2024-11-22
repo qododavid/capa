@@ -24,12 +24,12 @@ done
 # Install dependencies
 if ! command -v wget >/dev/null; then
     echo "Installing dependencies..."
-    sudo apt-get update >/dev/null
-    sudo apt-get install -y wget >/dev/null
+    sudo apt-get update -qq
+    sudo apt-get install -y -qq wget >/dev/null
 fi
 
 if ! pip show jedi-language-server >/dev/null; then
-    pip install jedi-language-server jinja2-cli >/dev/null
+    pip install jedi-language-server jinja2-cli -q
 fi
 
 # Set up git
