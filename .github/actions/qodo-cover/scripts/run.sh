@@ -23,10 +23,10 @@ while [[ "$#" -gt 0 ]]; do
 done
 
 # Install dependencies
-if ! command -v wget >/dev/null; then
+if ! command -v wget && sqlite3 --version >/dev/null; then
     echo "Installing dependencies..."
     sudo apt-get update -qq
-    sudo apt-get install -y -qq wget >/dev/null
+    sudo apt-get install -y -qq wget sqlite3 libsqlite3-dev >/dev/null
 fi
 
 if ! pip show jedi-language-server >/dev/null; then
