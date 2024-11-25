@@ -17,7 +17,6 @@ while [[ "$#" -gt 0 ]]; do
         --max-iterations) MAX_ITERATIONS="$2"; shift ;;
         --desired-coverage) DESIRED_COVERAGE="$2"; shift ;;
         --action-path) ACTION_PATH="$2"; shift ;;
-        --action-ref) ACTION_REF="$2"; shift ;;
         *) echo "Unknown parameter: $1"; exit 1 ;;
     esac
     shift
