@@ -56,7 +56,8 @@ runs:
           --model "${{ inputs.model }}" \
           --max-iterations "${{ inputs.max_iterations }}" \
           --desired-coverage "${{ inputs.desired_coverage }}" \
-          --action-path "${{ github.action_path }}"
+          --action-path "${{ github.action_path }}" \
+          --action-ref "${{ github.action_ref }}"
       env:
         GITHUB_TOKEN: ${{ inputs.github_token }}
         <<: ${{ toJSON(env) }}

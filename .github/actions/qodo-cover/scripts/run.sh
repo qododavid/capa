@@ -17,6 +17,7 @@ while [[ "$#" -gt 0 ]]; do
         --max-iterations) MAX_ITERATIONS="$2"; shift ;;
         --desired-coverage) DESIRED_COVERAGE="$2"; shift ;;
         --action-path) ACTION_PATH="$2"; shift ;;
+        --action-ref) ACTION_REF="$2"; shift ;;VERSION="$2"; shift ;;
         *) echo "Unknown parameter: $1"; exit 1 ;;
     esac
     shift
@@ -41,7 +42,7 @@ git config --global user.name "Qodo Cover"
 if [ ! -f "$BINARY_PATH" ]; then
     echo "Downloading cover-agent-pro..."
     mkdir -p /tmp/bin
-    wget -q -P /tmp/bin https://github.com/qododavid/capa/releases/download/v1/cover-agent-pro >/dev/null
+    wget -q -P /tmp/bin https://github.com/qododavid/capa/releases/download/${ACTION_REF}/cover-agent-pro >/dev/null
     chmod +x "$BINARY_PATH"
 fi
 
