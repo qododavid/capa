@@ -25,6 +25,14 @@ inputs:
     description: "LLM model name, e.g. 'gpt-4o'"
     required: false
     default: "gpt-4o"
+  max_iterations:
+    decription: "Maximum number test generation attempts per test file"
+    required: false
+    default: 3
+  desired_coverage:
+    description: "Desired coverage percentage"
+    required: false
+    default: 100
 
 runs:
   using: "composite"
@@ -41,12 +49,13 @@ runs:
         ${{ github.action_path }}/scripts/run.sh \
           --pr-number "${{ github.event.pull_request.number }}" \
           --pr-ref "${{ github.event.pull_request.head.ref }}" \
-          --greeting "${{ inputs.greeting }}" \
           --project-language "${{ inputs.project_language }}" \
           --project-root "${{ inputs.project_root }}" \
-          --code-coverage-path "${{ inputs.code_coverage_report_path }}" \
+          --code-coverage-report-path "${{ inputs.code_coverage_report_path }}" \
           --test-command "${{ inputs.test_command }}" \
           --model "${{ inputs.model }}" \
+          --max-iterations "${{ inputs.max_iterations }}" \
+          --desired-coverage "${{ inputs.desired_coverage }}" \
           --action-path "${{ github.action_path }}"
       env:
         GITHUB_TOKEN: ${{ inputs.github_token }}

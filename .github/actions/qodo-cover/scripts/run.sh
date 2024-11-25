@@ -9,12 +9,13 @@ while [[ "$#" -gt 0 ]]; do
     case $1 in
         --pr-number) PR_NUMBER="$2"; shift ;;
         --pr-ref) PR_REF="$2"; shift ;;
-        --greeting) GREETING="$2"; shift ;;
         --project-language) PROJECT_LANGUAGE="$2"; shift ;;
         --project-root) PROJECT_ROOT="$2"; shift ;;
-        --code-coverage-path) CODE_COVERAGE_PATH="$2"; shift ;;
+        --code-coverage-report-path) CODE_COVERAGE_REPORT_PATH="$2"; shift ;;
         --test-command) TEST_COMMAND="$2"; shift ;;
         --model) MODEL="$2"; shift ;;
+        --max-iterations) MAX_ITERATIONS="$2"; shift ;;
+        --desired-coverage) DESIRED_COVERAGE="$2"; shift ;;
         --action-path) ACTION_PATH="$2"; shift ;;
         *) echo "Unknown parameter: $1"; exit 1 ;;
     esac
@@ -38,7 +39,7 @@ git config --global user.name "Qodo Cover"
 
 # Download cover-agent if not cached
 if [ ! -f "$BINARY_PATH" ]; then
-    echo "Downloading cover-agent..."
+    echo "Downloading cover-agent-pro..."
     mkdir -p /tmp/bin
     wget -q -P /tmp/bin https://github.com/qododavid/capa/releases/download/v1/cover-agent-pro >/dev/null
     chmod +x "$BINARY_PATH"
@@ -49,13 +50,15 @@ git fetch origin
 git checkout "$PR_REF"
 gh pr diff "$PR_NUMBER" > /tmp/pr_diff.txt
 
-# Run cover-agent
+# Run cover-agent-pro
 "$BINARY_PATH" \
   --project-language "$PROJECT_LANGUAGE" \
   --project-root "$GITHUB_WORKSPACE/$PROJECT_ROOT" \
-  --code-coverage-report-path "$GITHUB_WORKSPACE/$CODE_COVERAGE_PATH" \
+  --code-coverage-report-path "$GITHUB_WORKSPACE/$CODE_COVERAGE_REPORT_PATH" \
   --test-command "$TEST_COMMAND" \
   --model "$MODEL" \
+  --max-iterations "$MAX_ITERATIONS" \
+  --desired-coverage "$DESIRED_COVERAGE" \
   --report-dir "$REPORT_DIR"
 
 # Handle changes if any
