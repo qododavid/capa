@@ -31,7 +31,7 @@ permissions:
 
 jobs:
   run-qodo-cover:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       
       ... # Set up your python test environment
@@ -81,6 +81,7 @@ If the Qodo Cover agent succeeds in improving coverage it will comment on your P
 
 ## Limitations
 
+* Must run on ubuntu-22.04 x64
 * Will only add test cases to existing Python unit test files
 * Your GitHub workflow must be able to generate coverage reports in Cobertura XML format (e.g. with pytest and pytest-cov)
 * You must provide your own OpenAI API key
