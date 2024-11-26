@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+# Unset LD_LIBRARY_PATH to avoid SQLite library conflicts
+unset LD_LIBRARY_PATH
+
 BINARY_PATH="/tmp/bin/cover-agent-pro"
 REPORT_DIR="/tmp"
 REPORT_PATH="$REPORT_DIR/report.txt"
