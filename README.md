@@ -37,7 +37,7 @@ jobs:
       ... # Set up your python test environment
 
       - name: qodo-cover
-        uses: Codium-ai/qodo-cover/.github/actions/qodo-cover@v0.1.0
+        uses: Codium-ai/qodo-cover/.github/actions/qodo-cover@v0.1.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           project_language: python
